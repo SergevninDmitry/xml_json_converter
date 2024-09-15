@@ -123,21 +123,18 @@ def dict_to_xml(tag, d):
 
 
 @celery.task(name="tasks.save_file", soft_time_limit=10, time_limit=60)
-def save_file(data, first_s=False):
+def save_file(data):
     session = Session()
     try:
-        if first_s is True:
-            return first_save(data)
+        converted_data, file_format, entrant_choice_id = data['converted_data'], data['file_format'], data[
+            'entrant_choice_id']
+        entrant_choice = session.query(EntrantChoice).get(entrant_choice_id)
+        if file_format == 'xml':
+            entrant_choice.xml_data = converted_data
         else:
-            converted_data, file_format, entrant_choice_id = data['converted_data'], data['file_format'], data[
-                'entrant_choice_id']
-            entrant_choice = session.query(EntrantChoice).get(entrant_choice_id)
-            if file_format == 'xml':
-                entrant_choice.xml_data = converted_data
-            else:
-                entrant_choice.json_data = converted_data
-            session.add(entrant_choice)
-            session.commit()
+            entrant_choice.json_data = converted_data
+        session.add(entrant_choice)
+        session.commit()
     except ValidationError as e:
         print(f'Ошибка при валидации данных: {e}')
         session.rollback()  # Откат транзакции в случае ошибки
@@ -196,7 +193,7 @@ def error_handler(request, exc, traceback):
 def process_file(data):
     try:
         task_chain = chain(
-            save_file.s(data, first_s=True).set(soft_time_limit=10, time_limit=60) |  # Первая задача: сохранение файла
+            first_save.s(data).set(soft_time_limit=10, time_limit=60) |  # Первая задача: сохранение файла
             convert_file.s().set(soft_time_limit=10, time_limit=60) |  # Вторая задача: конвертация файла
             save_file.s().set(soft_time_limit=10, time_limit=60)  # Третья задача: сохранение конвертированного файла
         )
@@ -208,6 +205,7 @@ def process_file(data):
         return {"status": "error", "message": str(e)}
 
 
+@celery.task(name="tasks.first_save", soft_time_limit=10, time_limit=60)
 def first_save(data):
     time.sleep(2)
     session = Session()
@@ -222,7 +220,7 @@ def first_save(data):
         try:
             data = DataJsonXml(**file_data)
             data = data.dict()
-        except Exception as e:
+        except ValidationError:
             raise
         identification = Identification(
             id_document_type=data.get('id_document_type'),

@@ -1,6 +1,5 @@
 FROM python:3.11.3
 
-# Устанавливаем необходимые переменные окружения
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 

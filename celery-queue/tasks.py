@@ -60,14 +60,16 @@ def sql_model_to_dict(obj, seen=None):
     """Преобразует sql модель в словарь"""
     if seen is None:
         seen = set()
+    # Предотвращение циклической зависимости
     if obj in seen:
-        return None  # Предотвращение циклической зависимости
+        return None
     seen.add(obj)
 
     result = {}
     for column in obj.__table__.columns:
         try:
-            if column.name == 'json_data' or column.name == 'xml_data':  # Исключаем поле json_data
+            # Исключаем поле json_data
+            if column.name == 'json_data' or column.name == 'xml_data':
                 continue
             value = getattr(obj, column.name)
             if isinstance(value, (datetime, date)):
@@ -83,7 +85,8 @@ def sql_model_to_dict(obj, seen=None):
             result[relationship.key] = None
         elif isinstance(related_obj, list):  # Если это список связанных объектов
             result[relationship.key] = [sql_model_to_dict(item, seen) for item in related_obj]
-        else:  # Если это один связанный объект
+        else:
+            # Если это один связанный объект
             result[relationship.key] = sql_model_to_dict(related_obj, seen)
     return result
 
@@ -130,7 +133,6 @@ def save_file(data, first_s=False):
                 'entrant_choice_id']
             entrant_choice = session.query(EntrantChoice).get(entrant_choice_id)
             if file_format == 'xml':
-                # Сохраняем xml строку
                 entrant_choice.xml_data = converted_data
             else:
                 entrant_choice.json_data = converted_data
@@ -175,7 +177,8 @@ def convert_file(data):
         data = sql_model_to_dict(file_record.add_entrant)
         if new_file_format == 'xml':
             xml_elem = dict_to_xml('root', data)
-            converted_data = ET.tostring(xml_elem, encoding='utf-8').decode('utf-8')  # Convert XML to string
+            # Convert XML to string
+            converted_data = ET.tostring(xml_elem, encoding='utf-8').decode('utf-8')
         else:
             converted_data = json.dumps(data, ensure_ascii=False)
         session.close()
@@ -299,19 +302,19 @@ def first_save(data):
         entrant_choice_id = entrant_choice.id
 
         return {'entrant_choice_id': entrant_choice_id, 'file_format': file_format}
-    except ExpatError as e:
+    except ExpatError:
         session.rollback()
         raise
-    except ValidationError as e:
+    except ValidationError:
         session.rollback()
         raise
-    except ValueError as e:
+    except ValueError:
         session.rollback()
         raise
-    except TypeError as e:
+    except TypeError:
         session.rollback()
         raise
-    except Exception as e:
+    except Exception:
         session.rollback()
         raise
     finally:

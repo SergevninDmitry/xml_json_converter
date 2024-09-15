@@ -1,0 +1,47 @@
+<Document>
+    <ID>32115</ID>
+    <UserID>3878</UserID>
+    <FirstName>Максим</FirstName>
+    <SecondName>Яруллин</SecondName>
+    <MiddleName></MiddleName>
+    <SexID>1</SexID>
+    <Birthday>07.08.2005</Birthday>
+    <CitizenshipID>185</CitizenshipID>
+    <Motherland>Россия Г.Астана</Motherland>
+    <Email>mail@etu.ru</Email>
+    <MobileTel>+7 (888) 888-88-88</MobileTel>
+    <AddressLine1>Могилевская область</AddressLine1>
+    <AddressLine2>Хуевская область</AddressLine2>
+    <AddressLine3></AddressLine3>
+    <AddressLine4></AddressLine4>
+    <HasAnotherLivingAddress>false</HasAnotherLivingAddress>
+    <SecondAddressLine1></SecondAddressLine1>
+    <SecondAddressLine2></SecondAddressLine2>
+    <SecondAddressLine3></SecondAddressLine3>
+    <SecondAddressLine4></SecondAddressLine4>
+    <PassportTypeID>1</PassportTypeID>
+    <Series>5661</Series>
+    <Number>111111</Number>
+    <BeginDate>08.9.2019</BeginDate>
+    <EndDate></EndDate>
+    <OrgCode>111-111</OrgCode>
+    <IssuedBy>МВД-АВОР.ПРДЛПАРОДАЬЕК</IssuedBy>
+    <NeedHostel></NeedHostel>
+    <SpecialConditions></SpecialConditions>
+    <IsWithDisabilities></IsWithDisabilities>
+    <Diploma>
+        <Series>123132</Series>
+        <Number>1211221</Number>
+        <Date>10.10.2000</Date>
+        <RegistrationNumber>уц</RegistrationNumber>
+        <GraduatedUniversityText>кцу</GraduatedUniversityText>
+        <EduDiplomaNameText></EduDiplomaNameText>
+    </Diploma>
+    <SNILS></SNILS>
+    <Revision>1</Revision>
+    <PassportNameText></PassportNameText>
+    <HasOriginalEduDiploma>false</HasOriginalEduDiploma>
+    <PassportUUID>151ad3fc-756f-46d0-8ec0-9d0355ec693a</PassportUUID>
+    <PublicCode>870-074-745 12</PublicCode>
+    <DocumentTypeID>1234</DocumentTypeID>
+</Document>

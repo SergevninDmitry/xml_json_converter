@@ -82,8 +82,7 @@ def all_db_id(id):
         finally:
             session.close()
 
-    # Использование функции
-    get_entrant_choice_with_addresses(id)  # Здесь 1 — это ID EntrantChoice
+    get_entrant_choice_with_addresses(id)
 
 
 if __name__ == "__main__":

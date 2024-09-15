@@ -19,7 +19,7 @@ docker-compose exec web python manage.py create_db
 ### Получение элемента базы данных по ID
 Чтобы получить элемент базы данных сущности EntrantChoice, используйте команду:
 ```bash 
-docker-compose exec web python manage.py all_db_id_1 {id}
+docker-compose exec web python manage.py all_db_id {id}
 ```
 где {id} — это ID сущности EntrantChoice в базе данных.
 

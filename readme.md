@@ -25,7 +25,9 @@ docker-compose exec web python manage.py all_db_id {id}
 
 ### Просмотр списка всех сущностей EntrantChoice
 Чтобы посмотреть список всех сущностей EntrantChoice, используйте команду:
+```bash 
 docker-compose exec web python manage.py all_db
+```
 
 ## Описание сущностей
 

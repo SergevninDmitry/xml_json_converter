@@ -34,7 +34,7 @@ def all_db():
 
 @cli.command("all_db_id")
 @click.argument('id', type=int)
-def all_db_id_1(id):
+def all_db_id(id):
     from sqlalchemy.orm import joinedload
     def get_entrant_choice_with_addresses(entrant_choice_id):
         session = Session()

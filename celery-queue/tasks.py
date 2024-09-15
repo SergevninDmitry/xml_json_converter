@@ -20,8 +20,7 @@ from sqlalchemy.orm import joinedload
 import xmltodict
 import xml.etree.ElementTree as ET
 from datetime import datetime, date
-# TODO: uid примера не удовлетворяет требованиям xsd схемы
-# !!!!! паттерн репозиторий мб https://habr.com/ru/companies/selectel/articles/796669/
+
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
 RESULT_BACKEND = os.environ.get("RESULT_BACKEND")
@@ -140,22 +139,20 @@ def save_file(data, first_s=False):
     except ValidationError as e:
         print(f'Ошибка при валидации данных: {e}')
         session.rollback()  # Откат транзакции в случае ошибки
-        raise
+
     except ValueError as e:
         print(f'Ошибка при сохранении данных: {e}')
         session.rollback()
-        raise
+
     except TypeError as e:
         print(f'Ошибка типа данных: {e}')
-        raise e
+
     except ExpatError as e:
         print(e)
         session.rollback()
-        raise e
     except Exception as e:
         print(f'Ошибка при сохранении файла в базу данных: {e}')
         session.rollback()
-        raise e
     finally:
         session.close()
 
@@ -304,7 +301,7 @@ def first_save(data):
         return {'entrant_choice_id': entrant_choice_id, 'file_format': file_format}
     except ExpatError as e:
         session.rollback()
-        return
+        raise
     except ValidationError as e:
         session.rollback()
         raise

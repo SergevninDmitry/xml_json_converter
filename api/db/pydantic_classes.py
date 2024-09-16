@@ -8,7 +8,7 @@ from datetime import date
 
 
 class DataJsonXml(BaseModel):
-    id_document_type: int = Field(..., validation_alias=AliasChoices("IdDocumentType", "id_document_type", 'DocumentTypeID'))
+    id_document_type: int = Field(None, validation_alias=AliasChoices("IdDocumentType", "id_document_type", 'DocumentTypeID'))
     doc_name: Optional[str] = Field(None, validation_alias=AliasChoices("DocName", "passport_name_text", 'PassportNameText'), min_length=1,
                                     max_length=255)
     doc_series: Optional[str] = Field(None, validation_alias=AliasChoices("DocSeries", "passport_series", 'Series'), min_length=1,

@@ -220,8 +220,10 @@ def first_save(data):
         try:
             data = DataJsonXml(**file_data)
             data = data.dict()
+            data['id_document_type'] = data['passport_type_id'] + 10000
         except ValidationError:
             raise
+
         identification = Identification(
             id_document_type=data.get('id_document_type'),
             doc_name=data.get('doc_name'),
@@ -303,8 +305,27 @@ def first_save(data):
     except ExpatError:
         session.rollback()
         raise
-    except ValidationError:
+    except ValidationError as e:
         session.rollback()
+        print(repr(e.errors()[0]))
+        input = e.errors()[0]['input']
+        if input is None:
+            logger.error(f'Не было передано обязательное поле: {repr(e.errors()[0]["loc"])}. '
+                       f'Полное сообщение ошибки: {repr(e.errors()[0])}')
+            raise ValueError(f'Не было передано обязательное поле: {repr(e.errors()[0]["loc"])}. '
+                             f'Полное сообщение ошибки: {repr(e.errors()[0])}')
+        else:
+            if len(input) > 1 and input[0] == input[1]:
+                logger.error(f'Было передано 2 одинаковых поля: {repr(e.errors()[0]["loc"])}. '
+                                 f'Исправьте входные данные исключив один из них. '
+                                 f'Полное сообщение ошибки: {repr(e.errors()[0])}')
+                raise ValueError(f'Было передано 2 одинаковых поля: {repr(e.errors()[0]["loc"])}. '
+                                 f'Исправьте входные данные исключив один из них. '
+                                 f'Полное сообщение ошибки: {repr(e.errors()[0])}')
+        if e.errors()[0]['type'] == 'string_pattern_mismatch':
+            raise ValueError(f'Не соблюдение паттерна поля: {repr(e.errors()[0]["loc"])}. '
+                             f'Используйте следующий паттерн: {repr(e.errors()[0]["ctx"])}'
+                             f'Полное сообщение ошибки: {repr(e.errors()[0])}')
         raise
     except ValueError:
         session.rollback()

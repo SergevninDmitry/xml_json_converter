@@ -11,7 +11,7 @@
   "email": "mail@etu.ru",
   "tel_mobile": "+7 (888) 888-88-88",
   "address_txt1": "Могилевская область",
-  "address_txt2": "Хуевская область",
+  "address_txt2": null,
   "address_txt3": null,
   "address_txt4": null,
   "has_another_living_address": false,
